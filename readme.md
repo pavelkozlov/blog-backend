@@ -1,3 +1,4 @@
+![example workflow](https://github.com/pavelkozlov/blog-backend/actions/workflows/golangci-lint.yml/badge.svg)
 # Цель проекта
 
 Реализовать аналог статического блога
