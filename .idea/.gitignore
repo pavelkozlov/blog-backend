@@ -6,3 +6,8 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+/dataSources.xml
+/modules.xml
+/nonStaticBlog.iml
+/sqldialects.xml
+/vcs.xml
