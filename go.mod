@@ -3,7 +3,9 @@ module blog
 go 1.18
 
 require (
+	github.com/caarlos0/env/v6 v6.9.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
+	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/labstack/echo/v4 v4.6.3 // indirect
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
