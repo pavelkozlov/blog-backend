@@ -1,6 +1,7 @@
 package main
 
 import (
+	"blog/pkg/database"
 	"context"
 	"net/http"
 
@@ -26,8 +27,11 @@ func main() {
 
 	cfg := config.NewConfig()
 	log := logger.NewLogger(cfg)
-
 	log.Debug("config loaded", "lol", "kek", "cfg", *cfg)
+	db := database.NewPostgresDB(cfg)
+	if db != nil {
+		log.Debug("Database connected")
+	}
 
 	e := echo.New()
 	e.HideBanner = true
