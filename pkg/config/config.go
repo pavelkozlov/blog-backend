@@ -1,13 +1,15 @@
 package config
 
 import (
+	"log"
+
 	env "github.com/caarlos0/env/v6"
 	"github.com/joho/godotenv"
-	"log"
 )
 
 type Config struct {
 	Database Postgres `envPrefix:"POSTGRESQL_"`
+	Server   Server   `envPrefix:"SERVER_"`
 }
 
 type Postgres struct {
@@ -15,6 +17,10 @@ type Postgres struct {
 	User     string `env:"USER,notEmpty"`
 	Password string `env:"PASSWORD,notEmpty"`
 	Db       string `env:"DB,notEmpty"`
+}
+
+type Server struct {
+	DebugMode bool `env:"DEBUG,notEmpty"`
 }
 
 func NewConfig() *Config {

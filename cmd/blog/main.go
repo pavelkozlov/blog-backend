@@ -1,25 +1,36 @@
 package main
 
 import (
-	"blog/pkg/config"
 	"context"
-	"fmt"
+	"net/http"
+
+	"blog/pkg/logger"
+
+	"os"
+
+	"os/signal"
+
+	"sync"
+
+	"time"
+
 	echo "github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"net/http"
-	"os"
-	"os/signal"
-	"sync"
+
+	"blog/pkg/config"
+
 	"syscall"
-	"time"
 )
 
 func main() {
 
 	cfg := config.NewConfig()
-	fmt.Println(cfg)
+	log := logger.NewLogger(cfg)
+
+	log.Debug("config loaded", "lol", "kek", "cfg", *cfg)
 
 	e := echo.New()
+	e.HideBanner = true
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format:           `{"time"="${time_rfc3339}", "method"="${method}", "path"="${path}", "id"="${id}", "status"="${status}"}'` + "\n",
 		CustomTimeFormat: "",
