@@ -1,6 +1,7 @@
 package main
 
 import (
+	"blog/internal/post/delivery"
 	"blog/pkg/database"
 	"context"
 	"net/http"
@@ -47,6 +48,7 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!\n")
 	})
+	e.GET("/blog", delivery.AllPosts)
 
 	wg := new(sync.WaitGroup)
 	wg.Add(1)
