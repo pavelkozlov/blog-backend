@@ -33,7 +33,7 @@ func (b blogPool) Put(old *blog) {
 }
 
 func newBlogPool() *blogPool {
-	pool := &sync.Pool{New: func() any {
+	pool := &sync.Pool{New: func() interface{} {
 		return new(blog)
 	}}
 	return &blogPool{pool: pool}

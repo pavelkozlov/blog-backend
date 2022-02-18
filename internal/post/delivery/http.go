@@ -11,11 +11,6 @@ import (
 type PostHandlers struct {
 }
 
-type pagination struct {
-	LastCreatedAt string
-	LastID        string
-}
-
 func parseQuery(c echo.Context) error {
 	// проверка, что об поля переданы, либо не переданы
 	lastId := c.QueryParam("last_id")
