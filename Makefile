@@ -6,6 +6,10 @@ migrate-up:
 migrate-down:
 	migrate -database ${POSTGRESQL_URL} -path migrations down -all
 test-coverage:
-	 go test -v -coverprofile=coverage.out ./... && go tool cover -html=coverage.out
+	go tool cover -html=coverage.out
 lint:
-	golangci-lint run ./... -w && goimports -local "github.com/pavelkozlov/blog-backend" -w .
+	golangci-lint run ./... && \
+	goimports -local "github.com/pavelkozlov/blog-backend" -w . && \
+	go fmt ./... && \
+	go mod tidy
+	 go test -v -coverprofile=coverage.out ./...
