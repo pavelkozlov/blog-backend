@@ -10,6 +10,7 @@ import (
 )
 
 type Logger interface {
+	Zap() *zap.Logger
 	Info(msg string, keysAndValues ...interface{})
 	Debug(msg string, keysAndValues ...interface{})
 	Warn(msg string, keysAndValues ...interface{})
@@ -17,7 +18,12 @@ type Logger interface {
 }
 
 type logger struct {
-	zap *zap.SugaredLogger
+	zap     *zap.SugaredLogger
+	prodZap *zap.Logger
+}
+
+func (l logger) Zap() *zap.Logger {
+	return l.prodZap
 }
 
 func (l logger) Info(msg string, keysAndValues ...interface{}) {
@@ -65,9 +71,8 @@ func NewLogger(config *config.Config) Logger {
 		log.Fatal("Can not init logger: " + err.Error())
 	}
 
-	sugar := zapLogger.Sugar()
-
 	return &logger{
-		zap: sugar,
+		zap:     zapLogger.Sugar(),
+		prodZap: zapLogger,
 	}
 }

@@ -40,10 +40,6 @@ type errorResp struct {
 	Message string `json:"message"`
 }
 
-func (e errorResp) str(msg string) string {
-
-}
-
 func AllPosts(c echo.Context) error {
 	// Достать пагинацию (дата создания и ID) ИЛИ по дефолту лимит = 10
 	//lastId, lastCreatedAt := "", ""
