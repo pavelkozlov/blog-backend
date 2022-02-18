@@ -2,6 +2,8 @@ package main
 
 import (
 	"blog/internal/post/delivery"
+	"blog/internal/post/repo"
+	"blog/internal/post/usecase"
 	"blog/pkg/database"
 	"context"
 	"net/http"
@@ -34,6 +36,10 @@ func main() {
 		log.Debug("Database connected")
 	}
 
+	repo := repo.NewPostRepo(db)
+	usecse := usecase.NewBlogUsecase(repo)
+	handlers := delivery.NewBlogHandlers(usecse)
+
 	e := echo.New()
 	e.HideBanner = true
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -48,7 +54,8 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!\n")
 	})
-	e.GET("/blog", delivery.AllPosts)
+
+	e.GET("/blog", echo.WrapHandler(handlers.AllPosts()))
 
 	wg := new(sync.WaitGroup)
 	wg.Add(1)

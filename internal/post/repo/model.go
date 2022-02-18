@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"blog/internal/post"
 	"database/sql"
 	"sync"
 	"time"
@@ -17,6 +18,19 @@ type blog struct {
 	CreatedAt   time.Time    `sql:"createdAt"`
 	UpdatedAt   time.Time    `sql:"updatedAt"`
 	DeletedAt   sql.NullTime `sql:"deletedAt"`
+}
+
+func (b blog) asDomainModel() *post.Blog {
+	return &post.Blog{
+		Title:       b.Title,
+		Slug:        b.Slug,
+		Body:        b.Body,
+		Description: b.Description,
+		IsDraft:     b.IsDraft,
+		AuthorId:    b.AuthorId,
+		CreatedAt:   b.CreatedAt,
+		UpdatedAt:   b.UpdatedAt,
+	}
 }
 
 type blogPool struct {

@@ -1,12 +1,13 @@
 package repo
 
 import (
+	"blog/internal/post"
 	"blog/pkg/database"
 	"context"
 )
 
 type PostRepo interface {
-	List(limit, offset int) ([]*blog, error)
+	List(limit, offset int) ([]*post.Blog, error)
 	Create(input *blog) error
 }
 
@@ -22,7 +23,7 @@ func NewPostRepo(db database.Postgres) PostRepo {
 	}
 }
 
-func (p postRepo) List(limit, offset int) ([]*blog, error) {
+func (p postRepo) List(limit, offset int) ([]*post.Blog, error) {
 	conn, err := p.db.Acquire()
 	if err != nil {
 		// ToDo log
@@ -37,7 +38,7 @@ func (p postRepo) List(limit, offset int) ([]*blog, error) {
 	}
 	defer rows.Close()
 
-	posts := make([]*blog, 0, limit)
+	posts := make([]*post.Blog, 0, limit)
 
 	model := p.blogPool.Get()
 	defer p.blogPool.Put(model)
@@ -50,7 +51,7 @@ func (p postRepo) List(limit, offset int) ([]*blog, error) {
 			// ToDo log me
 			continue
 		}
-		posts = append(posts, model)
+		posts = append(posts, model.asDomainModel())
 	}
 
 	return posts, rows.Err()
