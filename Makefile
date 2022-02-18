@@ -8,6 +8,7 @@ migrate-down:
 test-coverage:
 	go tool cover -html=coverage.out
 lint:
+	go generate ./...
 	golangci-lint run ./... && \
 	goimports -local "github.com/pavelkozlov/blog-backend" -w . && \
 	go fmt ./... && \
