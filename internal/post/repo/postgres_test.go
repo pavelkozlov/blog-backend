@@ -4,9 +4,10 @@ import (
 	mock_database "blog/pkg/database/mock"
 	"context"
 	"fmt"
+	"testing"
+
 	"github.com/golang/mock/gomock"
 	"github.com/matryer/is"
-	"testing"
 )
 
 type testCase struct {

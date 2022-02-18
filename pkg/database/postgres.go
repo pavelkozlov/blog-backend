@@ -5,11 +5,12 @@ import (
 	"blog/pkg/config"
 	"blog/pkg/logger"
 	"context"
+	"log"
+	"time"
+
 	_ "github.com/jackc/pgx/stdlib"
 	"github.com/jackc/pgx/v4/log/zapadapter"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"log"
-	"time"
 )
 
 type PostgresDatabase struct {
