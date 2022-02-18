@@ -8,4 +8,4 @@ migrate-down:
 test-coverage:
 	 go test -v -coverprofile=coverage.out ./... && go tool cover -html=coverage.out
 lint:
-	golangci-lint run ./... &&
+	golangci-lint run ./... -w && goimports -local "github.com/pavelkozlov/blog-backend" -w .
