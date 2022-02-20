@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-type blog struct {
+type Blog struct {
 	ID          string       `sql:"id"`
 	Title       string       `sql:"title"`
 	Slug        string       `sql:"slug"`
@@ -20,7 +20,7 @@ type blog struct {
 	DeletedAt   sql.NullTime `sql:"deletedAt"`
 }
 
-func (b blog) asDomainModel() *post.Blog {
+func (b Blog) asDomainModel() *post.Blog {
 	return &post.Blog{
 		Title:       b.Title,
 		Slug:        b.Slug,
@@ -37,18 +37,18 @@ type blogPool struct {
 	pool *sync.Pool
 }
 
-func (b blogPool) Get() *blog {
-	return b.pool.Get().(*blog)
+func (b blogPool) Get() *Blog {
+	return b.pool.Get().(*Blog)
 }
 
-func (b blogPool) Put(old *blog) {
-	*old = blog{}
+func (b blogPool) Put(old *Blog) {
+	*old = Blog{}
 	b.pool.Put(old)
 }
 
 func newBlogPool() *blogPool {
 	pool := &sync.Pool{New: func() interface{} {
-		return new(blog)
+		return new(Blog)
 	}}
 	return &blogPool{pool: pool}
 }

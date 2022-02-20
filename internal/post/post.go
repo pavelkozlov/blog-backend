@@ -1,8 +1,12 @@
+//go:generate easyjson -all ./post.go
 package post
 
 import (
 	"time"
 )
+
+//easyjson:json
+type Blogs []*Blog
 
 type Blog struct {
 	Title       string    `sql:"title"`
