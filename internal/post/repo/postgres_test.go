@@ -12,7 +12,7 @@ import (
 
 type testCase struct {
 	GetRepo        func(t *testing.T, ctrl *gomock.Controller) PostRepo
-	ExpectedResult []*blog
+	ExpectedResult []*Blog
 	ExpectedErr    error
 }
 
@@ -25,7 +25,7 @@ var (
 
 var listTestCases = []testCase{
 	{
-		ExpectedResult: make([]*blog, 5),
+		ExpectedResult: make([]*Blog, 5),
 		ExpectedErr:    nil,
 		GetRepo: func(t *testing.T, ctrl *gomock.Controller) PostRepo {
 			db := mock_database.NewMockPostgres(ctrl)
@@ -49,7 +49,7 @@ var listTestCases = []testCase{
 		},
 	},
 	{
-		ExpectedResult: make([]*blog, 0),
+		ExpectedResult: make([]*Blog, 0),
 		ExpectedErr:    queryError,
 		GetRepo: func(t *testing.T, ctrl *gomock.Controller) PostRepo {
 			db := mock_database.NewMockPostgres(ctrl)
@@ -64,7 +64,7 @@ var listTestCases = []testCase{
 		},
 	},
 	{
-		ExpectedResult: make([]*blog, 3),
+		ExpectedResult: make([]*Blog, 3),
 		ExpectedErr:    nil,
 		GetRepo: func(t *testing.T, ctrl *gomock.Controller) PostRepo {
 			db := mock_database.NewMockPostgres(ctrl)
@@ -93,7 +93,7 @@ var listTestCases = []testCase{
 		},
 	},
 	{
-		ExpectedResult: make([]*blog, 5),
+		ExpectedResult: make([]*Blog, 5),
 		ExpectedErr:    closeError,
 		GetRepo: func(t *testing.T, ctrl *gomock.Controller) PostRepo {
 			db := mock_database.NewMockPostgres(ctrl)
@@ -118,7 +118,7 @@ var listTestCases = []testCase{
 		},
 	},
 	{
-		ExpectedResult: make([]*blog, 0),
+		ExpectedResult: make([]*Blog, 0),
 		ExpectedErr:    acquireError,
 		GetRepo: func(t *testing.T, ctrl *gomock.Controller) PostRepo {
 			db := mock_database.NewMockPostgres(ctrl)

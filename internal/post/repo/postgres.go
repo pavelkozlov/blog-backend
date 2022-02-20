@@ -1,3 +1,4 @@
+//go:generate mockgen -source postgres.go --destination mock/repo_mock.go
 package repo
 
 import (
@@ -8,7 +9,7 @@ import (
 
 type PostRepo interface {
 	List(limit, offset int) ([]*post.Blog, error)
-	Create(input *blog) error
+	Create(input *Blog) error
 }
 
 type postRepo struct {
@@ -44,7 +45,7 @@ func (p postRepo) List(limit, offset int) ([]*post.Blog, error) {
 	defer p.blogPool.Put(model)
 
 	for rows.Next() {
-		model = &blog{}
+		model = &Blog{}
 		if err = rows.Scan(&model.ID, &model.Title, &model.Slug,
 			&model.Body, &model.Description, &model.IsDraft, &model.AuthorId,
 			&model.CreatedAt, &model.UpdatedAt, &model.DeletedAt); err != nil {
@@ -57,7 +58,7 @@ func (p postRepo) List(limit, offset int) ([]*post.Blog, error) {
 	return posts, rows.Err()
 }
 
-func (p postRepo) Create(input *blog) error {
+func (p postRepo) Create(input *Blog) error {
 	//TODO implement me
 	return nil
 }
