@@ -2,8 +2,8 @@
 package delivery
 
 import (
-	"blog/internal/post"
 	"blog/internal/post/usecase"
+	utils "blog/utils/http"
 	"net/http"
 )
 
@@ -20,15 +20,18 @@ func NewBlogHandlers(blogUsecase usecase.Blog) BlogHandlers {
 }
 
 func (b blogHandlers) AllPosts() http.HandlerFunc {
+
 	return func(w http.ResponseWriter, r *http.Request) {
-		blogs, _ := b.blogUsecase.ListAllBlogs(r.Context(), 100, 0)
-		js, err := post.Blogs(blogs).MarshalJSON()
+		limit, offset, err := utils.ParseLimitAndOffset(r)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			utils.WriteErrResponse(err, w, 400)
 			return
 		}
-		w.Header().Set("Content-Type", "application/json")
-		//nolint:errcheck
-		w.Write(js)
+		blogs, err := b.blogUsecase.ListAllBlogs(r.Context(), limit, offset)
+		if err != nil {
+			utils.WriteErrResponse(err, w, 500)
+			return
+		}
+		utils.WriteOkResponse(blogs, w)
 	}
 }
