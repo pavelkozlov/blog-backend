@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/caarlos0/env/v6 v6.9.1
 	github.com/golang/mock v1.6.0
+	github.com/google/wire v0.5.0
 	github.com/jackc/pgconn v1.11.0
 	github.com/jackc/pgproto3/v2 v2.2.0
 	github.com/jackc/pgx v3.6.2+incompatible
