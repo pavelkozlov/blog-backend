@@ -3,9 +3,20 @@ package http
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
+
+	"github.com/go-playground/validator/v10"
+)
+
+func init() {
+	v = validator.New()
+}
+
+var (
+	v *validator.Validate
 )
 
 type ErrResponse struct {
@@ -16,10 +27,29 @@ type OkResponse struct {
 	Data interface{} `json:"data"`
 }
 
+type UnmarshalJSON func(data []byte) error
+
+func ParseAndValidateBody(input interface{}, unmarshal UnmarshalJSON, r *http.Request) error {
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return fmt.Errorf("can not ioutil.ReadAll: %w", err)
+	}
+	if err = unmarshal(body); err != nil {
+		return fmt.Errorf("can not UnmarshalJSON: %w", err)
+	}
+	if err = v.Struct(input); err != nil {
+		return fmt.Errorf("validation error: %w", err)
+	}
+	return nil
+}
+
 func WriteErrResponse(err error, w http.ResponseWriter, code int) {
 	w.Header().Set("Content-Type", "application/json")
 	e, _ := ErrResponse{err.Error()}.MarshalJSON()
-	http.Error(w, string(e), code)
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.WriteHeader(code)
+	//nolint:errcheck
+	fmt.Fprintln(w, string(e))
 }
 
 func WriteOkResponse(data interface{}, w http.ResponseWriter) {

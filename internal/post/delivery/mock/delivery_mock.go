@@ -47,3 +47,17 @@ func (mr *MockBlogHandlersMockRecorder) AllPosts() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AllPosts", reflect.TypeOf((*MockBlogHandlers)(nil).AllPosts))
 }
+
+// CreatePost mocks base method.
+func (m *MockBlogHandlers) CreatePost() http.HandlerFunc {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreatePost")
+	ret0, _ := ret[0].(http.HandlerFunc)
+	return ret0
+}
+
+// CreatePost indicates an expected call of CreatePost.
+func (mr *MockBlogHandlersMockRecorder) CreatePost() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatePost", reflect.TypeOf((*MockBlogHandlers)(nil).CreatePost))
+}
