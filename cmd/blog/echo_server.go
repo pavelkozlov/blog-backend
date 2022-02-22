@@ -22,6 +22,7 @@ func initEchoServer(app *di.Application) *echo.Echo {
 	}))
 
 	e.GET("/blog", echo.WrapHandler(app.BlogHandlers.AllPosts()))
+	e.POST("/blog", echo.WrapHandler(app.BlogHandlers.CreatePost()))
 
 	return e
 }

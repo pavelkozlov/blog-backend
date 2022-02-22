@@ -2,6 +2,7 @@
 package delivery
 
 import (
+	"blog/internal/post"
 	"blog/internal/post/usecase"
 	utils "blog/utils/http"
 	"net/http"
@@ -9,10 +10,23 @@ import (
 
 type BlogHandlers interface {
 	AllPosts() http.HandlerFunc
+	CreatePost() http.HandlerFunc
 }
 
 type blogHandlers struct {
 	blogUsecase usecase.Blog
+}
+
+func (b blogHandlers) CreatePost() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		newBlog := new(post.NewBlog)
+		if err := utils.ParseAndValidateBody(newBlog, newBlog.UnmarshalJSON, r); err != nil {
+			utils.WriteErrResponse(err, w, 400)
+			return
+		}
+		//nolint:errcheck
+		w.Write([]byte("ok"))
+	}
 }
 
 func NewBlogHandlers(blogUsecase usecase.Blog) BlogHandlers {
