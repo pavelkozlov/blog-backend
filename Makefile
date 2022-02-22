@@ -8,7 +8,9 @@ migrate-down:
 test-coverage:
 	go tool cover -html=coverage.out
 lint:
-	go generate ./...
+	go get github.com/google/wire/cmd/wire@v0.5.0 && \
+	go install github.com/google/wire/cmd/wire@v0.5.0 && \
+	go generate ./... && \
 	golangci-lint run ./... && \
 	goimports -local "github.com/pavelkozlov/blog-backend" -w . && \
 	go fmt ./... && \

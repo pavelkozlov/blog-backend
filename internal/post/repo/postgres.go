@@ -9,7 +9,7 @@ import (
 
 type PostRepo interface {
 	List(limit, offset int) ([]*post.Blog, error)
-	Create(input *Blog) error
+	Create(input *post.NewBlog) (*post.Blog, error)
 }
 
 type postRepo struct {
@@ -58,7 +58,28 @@ func (p postRepo) List(limit, offset int) ([]*post.Blog, error) {
 	return posts, rows.Err()
 }
 
-func (p postRepo) Create(input *Blog) error {
-	//TODO implement me
-	return nil
+func (p postRepo) Create(input *post.NewBlog) (*post.Blog, error) {
+	model := p.blogPool.Get()
+	defer p.blogPool.Put(model)
+
+	model.fromDomainModel(input)
+
+	conn, err := p.db.Acquire()
+	if err != nil {
+		// ToDo log
+		return nil, err
+	}
+	defer conn.Release()
+
+	row := conn.QueryRow(context.Background(), INSERT_QUERY, model.Title, model.Slug, model.Body, model.Description, model.IsDraft, model.AuthorId)
+	*model = Blog{}
+
+	if err = row.Scan(&model.ID, &model.Title, &model.Slug,
+		&model.Body, &model.Description, &model.IsDraft, &model.AuthorId,
+		&model.CreatedAt, &model.UpdatedAt, &model.DeletedAt); err != nil {
+		// ToDo log me
+		return nil, err
+	}
+
+	return model.asDomainModel(), nil
 }

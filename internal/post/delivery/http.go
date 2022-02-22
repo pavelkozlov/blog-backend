@@ -24,8 +24,12 @@ func (b blogHandlers) CreatePost() http.HandlerFunc {
 			utils.WriteErrResponse(err, w, 400)
 			return
 		}
-		//nolint:errcheck
-		w.Write([]byte("ok"))
+		blog, err := b.blogUsecase.CreateBlog(r.Context(), newBlog)
+		if err != nil {
+			utils.WriteErrResponse(err, w, 500)
+			return
+		}
+		utils.WriteOkResponse(blog, w)
 	}
 }
 

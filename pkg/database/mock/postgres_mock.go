@@ -53,6 +53,144 @@ func (mr *MockPostgresMockRecorder) Acquire() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Acquire", reflect.TypeOf((*MockPostgres)(nil).Acquire))
 }
 
+// MockRow is a mock of Row interface.
+type MockRow struct {
+	ctrl     *gomock.Controller
+	recorder *MockRowMockRecorder
+}
+
+// MockRowMockRecorder is the mock recorder for MockRow.
+type MockRowMockRecorder struct {
+	mock *MockRow
+}
+
+// NewMockRow creates a new mock instance.
+func NewMockRow(ctrl *gomock.Controller) *MockRow {
+	mock := &MockRow{ctrl: ctrl}
+	mock.recorder = &MockRowMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRow) EXPECT() *MockRowMockRecorder {
+	return m.recorder
+}
+
+// Close mocks base method.
+func (m *MockRow) Close() {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Close")
+}
+
+// Close indicates an expected call of Close.
+func (mr *MockRowMockRecorder) Close() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockRow)(nil).Close))
+}
+
+// CommandTag mocks base method.
+func (m *MockRow) CommandTag() pgconn.CommandTag {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CommandTag")
+	ret0, _ := ret[0].(pgconn.CommandTag)
+	return ret0
+}
+
+// CommandTag indicates an expected call of CommandTag.
+func (mr *MockRowMockRecorder) CommandTag() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CommandTag", reflect.TypeOf((*MockRow)(nil).CommandTag))
+}
+
+// Err mocks base method.
+func (m *MockRow) Err() error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Err")
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Err indicates an expected call of Err.
+func (mr *MockRowMockRecorder) Err() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Err", reflect.TypeOf((*MockRow)(nil).Err))
+}
+
+// FieldDescriptions mocks base method.
+func (m *MockRow) FieldDescriptions() []pgproto3.FieldDescription {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FieldDescriptions")
+	ret0, _ := ret[0].([]pgproto3.FieldDescription)
+	return ret0
+}
+
+// FieldDescriptions indicates an expected call of FieldDescriptions.
+func (mr *MockRowMockRecorder) FieldDescriptions() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FieldDescriptions", reflect.TypeOf((*MockRow)(nil).FieldDescriptions))
+}
+
+// Next mocks base method.
+func (m *MockRow) Next() bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Next")
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// Next indicates an expected call of Next.
+func (mr *MockRowMockRecorder) Next() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Next", reflect.TypeOf((*MockRow)(nil).Next))
+}
+
+// RawValues mocks base method.
+func (m *MockRow) RawValues() [][]byte {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RawValues")
+	ret0, _ := ret[0].([][]byte)
+	return ret0
+}
+
+// RawValues indicates an expected call of RawValues.
+func (mr *MockRowMockRecorder) RawValues() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RawValues", reflect.TypeOf((*MockRow)(nil).RawValues))
+}
+
+// Scan mocks base method.
+func (m *MockRow) Scan(dest ...interface{}) error {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range dest {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Scan", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Scan indicates an expected call of Scan.
+func (mr *MockRowMockRecorder) Scan(dest ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Scan", reflect.TypeOf((*MockRow)(nil).Scan), dest...)
+}
+
+// Values mocks base method.
+func (m *MockRow) Values() ([]interface{}, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Values")
+	ret0, _ := ret[0].([]interface{})
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Values indicates an expected call of Values.
+func (mr *MockRowMockRecorder) Values() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Values", reflect.TypeOf((*MockRow)(nil).Values))
+}
+
 // MockRows is a mock of Rows interface.
 type MockRows struct {
 	ctrl     *gomock.Controller
@@ -232,6 +370,25 @@ func (mr *MockPgxPoolConnMockRecorder) Query(ctx, sql interface{}, args ...inter
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, sql}, args...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Query", reflect.TypeOf((*MockPgxPoolConn)(nil).Query), varargs...)
+}
+
+// QueryRow mocks base method.
+func (m *MockPgxPoolConn) QueryRow(ctx context.Context, sql string, args ...interface{}) pgx.Row {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, sql}
+	for _, a := range args {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "QueryRow", varargs...)
+	ret0, _ := ret[0].(pgx.Row)
+	return ret0
+}
+
+// QueryRow indicates an expected call of QueryRow.
+func (mr *MockPgxPoolConnMockRecorder) QueryRow(ctx, sql interface{}, args ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, sql}, args...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryRow", reflect.TypeOf((*MockPgxPoolConn)(nil).QueryRow), varargs...)
 }
 
 // Release mocks base method.

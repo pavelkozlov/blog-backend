@@ -3,6 +3,7 @@ module blog
 go 1.17
 
 require (
+	github.com/Machiel/slugify v1.0.1
 	github.com/caarlos0/env/v6 v6.9.1
 	github.com/go-playground/validator/v10 v10.10.0
 	github.com/golang/mock v1.6.0

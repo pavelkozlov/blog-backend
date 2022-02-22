@@ -35,6 +35,21 @@ func (m *MockBlog) EXPECT() *MockBlogMockRecorder {
 	return m.recorder
 }
 
+// CreateBlog mocks base method.
+func (m *MockBlog) CreateBlog(ctx context.Context, newBlog *post.NewBlog) (*post.Blog, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateBlog", ctx, newBlog)
+	ret0, _ := ret[0].(*post.Blog)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateBlog indicates an expected call of CreateBlog.
+func (mr *MockBlogMockRecorder) CreateBlog(ctx, newBlog interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateBlog", reflect.TypeOf((*MockBlog)(nil).CreateBlog), ctx, newBlog)
+}
+
 // ListAllBlogs mocks base method.
 func (m *MockBlog) ListAllBlogs(ctx context.Context, limit, offset int) ([]*post.Blog, error) {
 	m.ctrl.T.Helper()

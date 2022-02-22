@@ -6,7 +6,6 @@ package mock_repo
 
 import (
 	post "blog/internal/post"
-	repo "blog/internal/post/repo"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -36,11 +35,12 @@ func (m *MockPostRepo) EXPECT() *MockPostRepoMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockPostRepo) Create(input *repo.Blog) error {
+func (m *MockPostRepo) Create(input *post.NewBlog) (*post.Blog, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", input)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(*post.Blog)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // Create indicates an expected call of Create.
