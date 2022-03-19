@@ -1,9 +1,9 @@
 mode: set
 blog/internal/post/repo/model.go:22.42,33.2 1 1
-blog/internal/post/repo/model.go:35.53,40.30 5 0
-blog/internal/post/repo/model.go:45.2,49.31 5 0
-blog/internal/post/repo/model.go:40.30,42.3 1 0
-blog/internal/post/repo/model.go:42.8,44.3 1 0
+blog/internal/post/repo/model.go:35.53,40.30 5 1
+blog/internal/post/repo/model.go:45.2,49.31 5 1
+blog/internal/post/repo/model.go:40.30,42.3 1 1
+blog/internal/post/repo/model.go:42.8,44.3 1 1
 blog/internal/post/repo/model.go:56.31,58.2 1 1
 blog/internal/post/repo/model.go:60.34,63.2 2 1
 blog/internal/post/repo/model.go:65.30,66.45 1 1
@@ -19,8 +19,8 @@ blog/internal/post/repo/postgres.go:36.16,39.3 1 1
 blog/internal/post/repo/postgres.go:47.18,51.70 2 1
 blog/internal/post/repo/postgres.go:55.3,55.47 1 1
 blog/internal/post/repo/postgres.go:51.70,53.12 1 1
-blog/internal/post/repo/postgres.go:61.67,68.16 5 0
-blog/internal/post/repo/postgres.go:72.2,79.69 4 0
-blog/internal/post/repo/postgres.go:84.2,84.35 1 0
-blog/internal/post/repo/postgres.go:68.16,71.3 1 0
-blog/internal/post/repo/postgres.go:79.69,82.3 1 0
+blog/internal/post/repo/postgres.go:61.67,68.16 5 1
+blog/internal/post/repo/postgres.go:72.2,79.69 4 1
+blog/internal/post/repo/postgres.go:84.2,84.35 1 1
+blog/internal/post/repo/postgres.go:68.16,71.3 1 1
+blog/internal/post/repo/postgres.go:79.69,82.3 1 1

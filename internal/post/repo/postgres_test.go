@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"blog/internal/post"
 	mock_database "blog/pkg/database/mock"
 	"context"
 	"fmt"
@@ -12,7 +13,7 @@ import (
 
 type testCase struct {
 	GetRepo        func(t *testing.T, ctrl *gomock.Controller) PostRepo
-	ExpectedResult []*Blog
+	ExpectedResult interface{}
 	ExpectedErr    error
 }
 
@@ -21,6 +22,7 @@ var (
 	decodeError  = fmt.Errorf("decode error")
 	closeError   = fmt.Errorf("close error")
 	acquireError = fmt.Errorf("acquire error")
+	scanError    = fmt.Errorf("scan error")
 )
 
 var listTestCases = []testCase{
@@ -128,7 +130,7 @@ var listTestCases = []testCase{
 	},
 }
 
-func TestList(t *testing.T) {
+func TestPostRepo_List(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	i := is.New(t)
@@ -136,8 +138,84 @@ func TestList(t *testing.T) {
 	for _, tc := range listTestCases {
 		repo := tc.GetRepo(t, ctrl)
 		blogs, err := repo.List(10, 0)
-		i.Equal(len(blogs), len(tc.ExpectedResult))
+		i.Equal(len(blogs), len(tc.ExpectedResult.([]*Blog)))
 		i.Equal(err, tc.ExpectedErr)
 	}
 
+}
+
+var createTestCases = []testCase{
+	{
+		ExpectedResult: new(post.Blog),
+		ExpectedErr:    nil,
+		GetRepo: func(t *testing.T, ctrl *gomock.Controller) PostRepo {
+			db := mock_database.NewMockPostgres(ctrl)
+			pgxPoolCon := mock_database.NewMockPgxPoolConn(ctrl)
+			row := mock_database.NewMockRow(ctrl)
+
+			db.EXPECT().Acquire().Return(pgxPoolCon, nil)
+			pgxPoolCon.EXPECT().QueryRow(context.Background(), INSERT_QUERY, gomock.Any()).Return(row)
+
+			row.EXPECT().Scan(gomock.Any()).Return(nil)
+			pgxPoolCon.EXPECT().Release().Return()
+			return NewPostRepo(db)
+		},
+	},
+	{
+		ExpectedResult: nil,
+		ExpectedErr:    acquireError,
+		GetRepo: func(t *testing.T, ctrl *gomock.Controller) PostRepo {
+			db := mock_database.NewMockPostgres(ctrl)
+			pgxPoolCon := mock_database.NewMockPgxPoolConn(ctrl)
+			db.EXPECT().Acquire().Return(pgxPoolCon, acquireError)
+			return NewPostRepo(db)
+		},
+	},
+	{
+		ExpectedResult: nil,
+		ExpectedErr:    scanError,
+		GetRepo: func(t *testing.T, ctrl *gomock.Controller) PostRepo {
+			db := mock_database.NewMockPostgres(ctrl)
+			pgxPoolCon := mock_database.NewMockPgxPoolConn(ctrl)
+			row := mock_database.NewMockRow(ctrl)
+
+			db.EXPECT().Acquire().Return(pgxPoolCon, nil)
+			pgxPoolCon.EXPECT().QueryRow(context.Background(), INSERT_QUERY, gomock.Any()).Return(row)
+
+			row.EXPECT().Scan(gomock.Any()).Return(scanError)
+			pgxPoolCon.EXPECT().Release().Return()
+			return NewPostRepo(db)
+		},
+	},
+}
+
+func TestPostRepo_Create(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	i := is.New(t)
+
+	for _, tc := range createTestCases {
+		repo := tc.GetRepo(t, ctrl)
+		blogs, err := repo.Create(&post.NewBlog{})
+		i.Equal(blogs, tc.ExpectedResult)
+		i.Equal(err, tc.ExpectedErr)
+	}
+}
+
+func TestPostRepo_BlogFromDomainModel(t *testing.T) {
+	inputDescription := "not null input description"
+
+	model := new(Blog)
+	input := new(post.NewBlog)
+	model.fromDomainModel(input)
+	i := is.New(t)
+	i.Equal(model.Description, "")
+
+	input.Description = nil
+	model.fromDomainModel(input)
+	i.Equal(model.Description, "")
+
+	input.Description = &inputDescription
+	model.fromDomainModel(input)
+	i.Equal(model.Description, inputDescription)
 }
